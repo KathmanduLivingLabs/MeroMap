@@ -38,28 +38,7 @@ public class Splash extends Activity {
                     }
                 });
             }
-        },50);
+        },5);
     }
 
-
-
-   /* public void addListenerOnButton()
-    {
-
-        final Context context = this;
-
-        text = (TextView) findViewById(R.id.skip);
-
-        text.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(Splash.this, MapActivity.class);
-                startActivity(intent);
-
-            }
-        });
-    }*/
 }

@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.Button;
@@ -111,9 +113,9 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         map = (MapView) findViewById(R.id.map);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-        GeoPoint startPoint = new GeoPoint(longitude, latitude);
-        //GeoPoint startPoint = new GeoPoint(27.7360100,
-        //        85.3355140);
+        //GeoPoint startPoint = new GeoPoint(longitude, latitude);
+        GeoPoint startPoint = new GeoPoint(27.7360100,
+                85.3355140);
         IMapController mapController = map.getController();
         mapController.setZoom(16);
         mapController.setCenter(startPoint);
@@ -171,42 +173,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
             }
         }
 
-       /* //Loading KML content
-        mKmlDocument = new KmlDocument();
-        //Get OpenStreetMap content as KML with Overpass API:
-        OverpassAPIProvider overpassProvider = new OverpassAPIProvider();
-        BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.25, startPoint.getLongitude() + 0.25,
-                startPoint.getLatitude() - 0.25, startPoint.getLongitude() - 0.25);
-        String oUrl = overpassProvider.urlForTagSearchKml("highway=speed_camera", oBB, 500, 30);
-        boolean ok = overpassProvider.addInKmlFolder(mKmlDocument.mKmlRoot, oUrl);
 
-        if (ok) {
-            //Simple styling
-            Drawable defaultMarker = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_kml_point, null);
-            Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
-            Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
-            //13.2 Advanced styling with Styler
-            KmlFeature.Styler styler = new MyKmlStyler(defaultStyle);
-
-            FolderOverlay kmlOverlay = (FolderOverlay) mKmlDocument.mKmlRoot.buildOverlay(map, defaultStyle, styler, mKmlDocument);
-            map.getOverlays().add(kmlOverlay);
-            BoundingBox bb = mKmlDocument.mKmlRoot.getBoundingBox();
-            if (bb != null) {
-                //map.zoomToBoundingBox(bb, false); //=> not working in onCreate - this is a well-known osmdroid issue.
-                //Workaround:
-                setInitialViewOn(bb);
-            }
-        } else
-            Toast.makeText(this, "Error when loading KML", Toast.LENGTH_SHORT).show();
-
-        //Grab overlays in KML structure, save KML document locally
-        if (mKmlDocument.mKmlRoot != null) {
-            KmlFolder root = mKmlDocument.mKmlRoot;
-            mKmlDocument.saveAsKML(mKmlDocument.getDefaultPathForAndroid("my_route.kml"));
-            //15. Loading and saving of GeoJSON content
-            mKmlDocument.saveAsGeoJSON(mKmlDocument.getDefaultPathForAndroid("my_route.json"));
-        }
-*/
 
         // Handling Map events
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
@@ -414,6 +381,17 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
 
         map.invalidate();
         return true;
+
+    }
+
+    public void isGPSEnable(){
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean enabled = service
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
 
     }
 

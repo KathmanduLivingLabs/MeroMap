@@ -24,4 +24,10 @@
     <string name="btn_update">Update</string>
     <string name="btn_delete">Delete</string>
     <string name="enter_contact">Phone Number</string>
+
+
+    <string name="listing">Modify/Upload</string>
+    <string name="selection">Tag Selection</string>
+    <string name="modify">Modify POI</string>
+    <string name="map_app">Map</string>
 </resources>
